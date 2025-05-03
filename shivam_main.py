@@ -48,7 +48,7 @@ def recognize_face(frame, face_detector, face_recognizer, known_faces, threshold
     # Detect faces
     _, faces = face_detector.detect(frame)
     if faces is None:
-        return None, None
+        return []  # Return empty list instead of (None, None)
         
     results = []
     for face in faces:
@@ -62,7 +62,7 @@ def recognize_face(frame, face_detector, face_recognizer, known_faces, threshold
         
         for face_id, known_features in known_faces.items():
             score = face_recognizer.match(features, known_features, 
-                                        cv2.FaceRecognizerSF_FR_COSINE)
+                                          cv2.FaceRecognizerSF_FR_COSINE)
             if score > best_score:
                 best_score = score
                 best_match = face_id
@@ -73,6 +73,7 @@ def recognize_face(frame, face_detector, face_recognizer, known_faces, threshold
             results.append(("unknown", best_score, face))
             
     return results
+
 
 def main():
     # Load models
